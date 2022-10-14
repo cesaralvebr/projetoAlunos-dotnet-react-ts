@@ -1,27 +1,27 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FaUserPlus } from "react-icons/fa";
 import Aluno from "../models/Aluno";
 import ModalAlunos from "./ModalAlunos";
 
 interface TabelaProps {
     alunos: Aluno[] | null,
-    setAlunoSelecionado:Dispatch<SetStateAction<Aluno>>,
-    alunoSelecionado: Aluno    
+    setAlunoSelecionado: Dispatch<SetStateAction<Aluno>>,
+    alunoSelecionado: Aluno,
+    adicionarAluno: (nome: string, email: string, idade: number) => void;
+
 }
-export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado }: TabelaProps) {
+
+
+export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, adicionarAluno }: TabelaProps) {
     const cor = { "white": "#fff" };
 
-const [modalIncluir, setModalIncluir] = useState<boolean>(false);
+    const [modalIncluir, setModalIncluir] = useState<boolean>(false);
 
-function recuperarValoresInputAluno(){
-    console.log("rodou");    
-}
+    function adicionarNovoAluno(nome: string, email: string, idade: number) {
+        adicionarAluno(nome, email, idade)
+        abrirFecharModalIncluir();
+    }
 
-
-const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    //setAlunoSelecionado();
-}
 
     const abrirFecharModalIncluir = () => {
         setModalIncluir(!modalIncluir)
@@ -53,19 +53,20 @@ const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
                 </tr>
             )
         })
-
     }
+
+
+
     return (
         <div style={{ backgroundColor: cor.white, borderRadius: '10px 10px' }}>
             <h3>Cadastro Aluno</h3>
             <header>
                 <button className="btn btn-success" onClick={abrirFecharModalIncluir}><FaUserPlus /> Incluir novo aluno </button>
                 <ModalAlunos
-                 handleChange={handleChange}
-                 modalIncluir={modalIncluir} 
-                 abrirFecharModalIncluir={() =>abrirFecharModalIncluir()}
-                 valoresInputAluno={recuperarValoresInputAluno}
-                 />
+                    modalIncluir={modalIncluir}
+                    abrirFecharModalIncluir={() => abrirFecharModalIncluir()}
+                    adicionarNovoAluno={adicionarNovoAluno}
+                />
             </header>
             <table className="table table-bordered">
                 <thead>

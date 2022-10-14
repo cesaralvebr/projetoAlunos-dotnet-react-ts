@@ -1,42 +1,38 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import Entrada from "./Entrada";
 
 
-interface ModalAlunos{
-    modalIncluir : boolean
-    handleChange: (event: React.FormEvent<HTMLInputElement>) => void
-    abrirFecharModalIncluir:() => void
-    valoresInputAluno: (nome:string, email:string, idade:number,event: React.FormEvent<HTMLInputElement>)=> any
+interface ModalAlunos {
+    modalIncluir: boolean   
+    abrirFecharModalIncluir: () => void
+    adicionarNovoAluno: (nome: string, email: string, idade: number) => any
 }
 
-export default function ModalAlunos({modalIncluir, handleChange, abrirFecharModalIncluir, valoresInputAluno}:ModalAlunos) {  
-    return(
+
+
+export default function ModalAlunos({ modalIncluir, abrirFecharModalIncluir, adicionarNovoAluno }: ModalAlunos) {
+    const id = 0;
+    const [nome, setNome] = useState<string>("");
+    const [idade, setIdade] = useState<number>(0);
+    const [email, setEmail] = useState<string>("");
+
+    return (
         <Modal isOpen={modalIncluir}>
-        <ModalHeader>
-            Incluir Alunos
-        </ModalHeader>
+            <ModalHeader>
+                Incluir Alunos
+            </ModalHeader>
 
-        <ModalBody>
-            <div className="form-group">
-                <label> Nome: </label>
-                <br />
-                <input type="text" className="form-control" name="nome" onChange={handleChange} />
-                <br />
-                <label> Email: </label>
-                <br />
-                <input type="text" className="form-control" name="email" onChange={handleChange}/>
-                <br />
-                <label> Idade: </label>
-                <br />
-                <input type="text" className="form-control" name="idade" onChange={handleChange}/>
-                <br />
-            </div>
-        </ModalBody>
+            <ModalBody>
+                <Entrada texto="Nome" tipo="text" valor={nome} setValor={setNome}/>
+                <Entrada texto="Idade" tipo="text" valor={idade} setValor={setIdade} />
+                <Entrada texto="E-mail" tipo="text" valor={email} setValor={setEmail} />
+            </ModalBody>
 
-        <ModalFooter>
-            <button className="btn btn-primary" onClick={()=>handleChange}>Incluir</button>{" "}
-            <button className="btn btn-danger" onClick={abrirFecharModalIncluir}>Cancelar</button>
-        </ModalFooter>
-    </Modal>
+            <ModalFooter>
+                <button className="btn btn-primary" onClick={() => adicionarNovoAluno(nome,email,idade)}>Incluir</button>{" "}
+                <button className="btn btn-danger" onClick={abrirFecharModalIncluir}>Cancelar</button>
+            </ModalFooter>
+        </Modal>
     )
 }

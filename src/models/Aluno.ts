@@ -1,10 +1,10 @@
 export default class Aluno {
-    Id: string
+    Id: number
     Nome: string
     Email: string
     Idade: number
 
-    constructor(nome: string, email: string, idade: number,id: string = "") {
+    constructor(nome: string, email: string, idade: number,id: number = 0) {
         this.Nome = nome
         this.Idade = idade
         this.Email = email
