@@ -21,8 +21,8 @@ export function useConsumerApi<T = unknown>(url: string) {
             })
     }
 
-    const adicionarAluno = async (nome: string, email: string, idade: number) => {
-        const novoAluno = new Aluno(nome,email, idade);
+    const adicionarAluno = async (novoAluno: Aluno) => {
+       
         await api({
             method: 'post',
             url: url,

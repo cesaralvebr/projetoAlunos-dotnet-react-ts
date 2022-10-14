@@ -1,12 +1,13 @@
 import React, { MouseEventHandler, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import Aluno from "../models/Aluno";
 import Entrada from "./Entrada";
 
 
 interface ModalAlunos {
     modalIncluir: boolean   
     abrirFecharModalIncluir: () => void
-    adicionarNovoAluno: (nome: string, email: string, idade: number) => any
+    adicionarNovoAluno: (aluno:Aluno) => any
 }
 
 
@@ -30,7 +31,7 @@ export default function ModalAlunos({ modalIncluir, abrirFecharModalIncluir, adi
             </ModalBody>
 
             <ModalFooter>
-                <button className="btn btn-primary" onClick={() => adicionarNovoAluno(nome,email,idade)}>Incluir</button>{" "}
+                <button className="btn btn-primary" onClick={() => adicionarNovoAluno(new Aluno(nome,email,idade))}>Incluir</button>{" "}
                 <button className="btn btn-danger" onClick={abrirFecharModalIncluir}>Cancelar</button>
             </ModalFooter>
         </Modal>

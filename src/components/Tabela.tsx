@@ -7,7 +7,7 @@ interface TabelaProps {
     alunos: Aluno[] | null,
     setAlunoSelecionado: Dispatch<SetStateAction<Aluno>>,
     alunoSelecionado: Aluno,
-    adicionarAluno: (nome: string, email: string, idade: number) => void;
+    adicionarAluno: (Aluno: Aluno) => void;
 
 }
 
@@ -17,14 +17,16 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
 
     const [modalIncluir, setModalIncluir] = useState<boolean>(false);
 
-    function adicionarNovoAluno(nome: string, email: string, idade: number) {
-        adicionarAluno(nome, email, idade)
+    function adicionarNovoAluno(aluno: Aluno) {
+        adicionarAluno(aluno)
         abrirFecharModalIncluir();
     }
 
 
     const abrirFecharModalIncluir = () => {
         setModalIncluir(!modalIncluir)
+
+        if(!modalIncluir) Aluno.vazio()
     }
 
     function renderizarCabecalho() {
@@ -64,7 +66,7 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
                 <button className="btn btn-success" onClick={abrirFecharModalIncluir}><FaUserPlus /> Incluir novo aluno </button>
                 <ModalAlunos
                     modalIncluir={modalIncluir}
-                    abrirFecharModalIncluir={() => abrirFecharModalIncluir()}
+                    abrirFecharModalIncluir={() => abrirFecharModalIncluir()}                   
                     adicionarNovoAluno={adicionarNovoAluno}
                 />
             </header>
