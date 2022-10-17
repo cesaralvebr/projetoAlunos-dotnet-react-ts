@@ -58,5 +58,22 @@ export function useConsumerApi<T = unknown>(url: string) {
             })
     }
 
-    return { data, isFetching, adicionarAluno, editarAluno,obterAlunos }
+    const excluirAluno = async (id:number) => {
+        await api({
+            method: 'delete',
+            url: url+"/"+id,
+            withCredentials: false,
+            headers: {
+                'content-Type': 'application/json'
+            }
+        }).then(response => {
+            console.log({ "edição/sucesso": JSON.stringify(response.data) });
+
+        })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    return { data, isFetching, adicionarAluno, editarAluno,excluirAluno, obterAlunos }
 }

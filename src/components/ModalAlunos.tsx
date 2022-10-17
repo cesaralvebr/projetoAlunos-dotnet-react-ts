@@ -32,6 +32,7 @@ export default function ModalAlunos(
     const [email, setEmail] = useState<string>("");
 
     return (
+        
         <Modal isOpen={modalIncluir} >
             <ModalHeader>
                 Incluir Alunos
