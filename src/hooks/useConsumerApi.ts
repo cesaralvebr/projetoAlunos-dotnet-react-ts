@@ -21,18 +21,18 @@ export function useConsumerApi<T = unknown>(url: string) {
             })
     }
 
-    const adicionarAluno = async (novoAluno: Aluno) => {
+    const adicionarAluno = async (aluno: Aluno) => {
 
         await api({
             method: 'post',
             url: url,
             withCredentials: false,
-            data: novoAluno,
+            data: aluno,
             headers: {
                 'content-Type': 'application/json'
             }
         }).then(response => {
-            console.log({ "sucesso": JSON.stringify(response.data) });
+            console.log({ "adição/sucesso": JSON.stringify(response.data) });
 
         })
             .catch(error => {
@@ -40,5 +40,23 @@ export function useConsumerApi<T = unknown>(url: string) {
             })
     }
 
-    return { data, isFetching, adicionarAluno, obterAlunos }
+    const editarAluno = async (aluno: Aluno) => {
+        await api({
+            method: 'put',
+            url: url+"/"+aluno.id,
+            withCredentials: false,
+            data: aluno,
+            headers: {
+                'content-Type': 'application/json'
+            }
+        }).then(response => {
+            console.log({ "edição/sucesso": JSON.stringify(response.data) });
+
+        })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    return { data, isFetching, adicionarAluno, editarAluno,obterAlunos }
 }

@@ -7,12 +7,20 @@ interface ModalAlunos {
     modalIncluir: boolean
     abrirFecharModalIncluir: () => void
     alunoSelecionado: Aluno
-    adicionarNovoAluno: (aluno: Aluno) => any
+    adicionarNovoAluno: (aluno: Aluno) => void
+    editarAlunoSelecionado: (aluno: Aluno) => void
 }
 
-export default function ModalAlunos({ modalIncluir, abrirFecharModalIncluir, adicionarNovoAluno, alunoSelecionado }: ModalAlunos) {
-    const id = alunoSelecionado.id;
+export default function ModalAlunos(
+    {
+        modalIncluir,
+        abrirFecharModalIncluir,
+        adicionarNovoAluno,
+        alunoSelecionado,
+        editarAlunoSelecionado
+    } : ModalAlunos) {
 
+    const id = alunoSelecionado.id;
     useEffect(() => {
         setNome(alunoSelecionado.nome ?? "")
         setEmail(alunoSelecionado.email ?? "")
@@ -40,7 +48,7 @@ export default function ModalAlunos({ modalIncluir, abrirFecharModalIncluir, adi
 
             <ModalFooter>
                 {alunoSelecionado.id ?
-                    <button className="btn btn-primary" onClick={() => adicionarNovoAluno(new Aluno(nome, email, idade))}> Editar</button> :
+                    <button className="btn btn-primary" onClick={() => editarAlunoSelecionado(new Aluno(nome, email, idade, id))}> Editar</button> :
                     <button className="btn btn-primary" onClick={() => adicionarNovoAluno(new Aluno(nome, email, idade))}> Incluir</button>} {" "}
                 <button className="btn btn-danger" onClick={abrirFecharModalIncluir}>Cancelar</button>
             </ModalFooter>

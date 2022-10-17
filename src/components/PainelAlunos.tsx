@@ -7,10 +7,11 @@ import Tabela from "./Tabela";
 export default function PainelAlunos() {
 
     const [alunoSelecionado, setAlunoSelecionado] = useState<Aluno>(Aluno.vazio())
-    const { data: todosAlunos, isFetching, adicionarAluno, obterAlunos } = useConsumerApi<Aluno[]>("api/Alunos")
+    const { data: todosAlunos, isFetching, adicionarAluno, obterAlunos, editarAluno} = useConsumerApi<Aluno[]>("api/Alunos")
+
     useEffect(() => {
-        obterAlunos();       
-    }, [])
+        obterAlunos();  
+    }, [alunoSelecionado])
 
     return (
         <div>
@@ -19,6 +20,8 @@ export default function PainelAlunos() {
                 setAlunoSelecionado={setAlunoSelecionado}
                 alunoSelecionado={alunoSelecionado}
                 adicionarAluno={adicionarAluno}
+                editarAluno={editarAluno}
+                atualizarTabelaAluno={obterAlunos}
                />
 
         </div>

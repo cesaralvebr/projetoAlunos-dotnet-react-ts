@@ -7,25 +7,46 @@ interface TabelaProps {
     alunos: Aluno[] | null,
     setAlunoSelecionado: Dispatch<SetStateAction<Aluno>>,
     alunoSelecionado: Aluno,
-    adicionarAluno: (Aluno: Aluno) => void;
+    adicionarAluno: (aluno: Aluno) => void;
+    editarAluno: (aluno: Aluno) => void;
+    atualizarTabelaAluno: () => void
 }
 
-export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, adicionarAluno }: TabelaProps) {
+export default function Tabela(
+    {
+        alunos, setAlunoSelecionado,
+        alunoSelecionado, adicionarAluno,
+        editarAluno, atualizarTabelaAluno
+    }: TabelaProps) {
     const cor = { "white": "#fff" };
 
     const [modalIncluir, setModalIncluir] = useState<boolean>(false);
 
+    const atualizarTabelaAlunoCallback = useCallback(() => {
+        atualizarTabelaAluno();      
+
+    }, [atualizarTabelaAluno]);
+
+    useEffect(() => {
+        atualizarTabelaAlunoCallback()
+    }, [atualizarTabelaAlunoCallback])
+
     function adicionarNovoAluno(aluno: Aluno) {
         adicionarAluno(aluno)
         abrirFecharModalIncluir();
+        atualizarTabelaAlunoCallback();
+    }
+
+    function editarAlunoSelecionado(aluno: Aluno) {
+        editarAluno(aluno);
+        abrirFecharModalIncluir();
+        atualizarTabelaAlunoCallback();
     }
 
     const selecionarAlunoCallback = useCallback((aluno: Aluno, opcao: string) => {
-
         setAlunoSelecionado(aluno);
         abrirFecharModalIncluir();
     }, [alunoSelecionado]);
-
 
     const abrirFecharModalIncluir = (podeLimpar?: boolean) => {
         setModalIncluir(!modalIncluir)
@@ -71,6 +92,7 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
                     abrirFecharModalIncluir={() => abrirFecharModalIncluir()}
                     adicionarNovoAluno={adicionarNovoAluno}
                     alunoSelecionado={alunoSelecionado}
+                    editarAlunoSelecionado={editarAlunoSelecionado}
                 />
             </header>
             <table className="table table-bordered">
