@@ -8,7 +8,6 @@ export default function PainelAlunos() {
 
     const [alunoSelecionado, setAlunoSelecionado] = useState<Aluno>(Aluno.vazio())
     const { data: todosAlunos, isFetching, adicionarAluno, obterAlunos } = useConsumerApi<Aluno[]>("api/Alunos")
-
     useEffect(() => {
         obterAlunos();       
     }, [])

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { FaUserPlus } from "react-icons/fa";
 import Aluno from "../models/Aluno";
 import ModalAlunos from "./ModalAlunos";
@@ -8,7 +8,6 @@ interface TabelaProps {
     setAlunoSelecionado: Dispatch<SetStateAction<Aluno>>,
     alunoSelecionado: Aluno,
     adicionarAluno: (Aluno: Aluno) => void;
-
 }
 
 
@@ -22,11 +21,17 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
         abrirFecharModalIncluir();
     }
 
+    const selecionarAlunoCallback = useCallback((aluno: Aluno, opcao: string) => {
 
-    const abrirFecharModalIncluir = () => {
+        setAlunoSelecionado(aluno);
+        abrirFecharModalIncluir();
+    }, [alunoSelecionado]);
+
+
+    const abrirFecharModalIncluir = (podeLimpar?:boolean) => {
         setModalIncluir(!modalIncluir)
 
-        if(!modalIncluir) Aluno.vazio()
+        if(podeLimpar) setAlunoSelecionado(Aluno.vazio());
     }
 
     function renderizarCabecalho() {
@@ -49,7 +54,7 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
                     <td>{aluno.email}</td>
                     <td>{aluno.idade}</td>
                     <td style={{ padding: '10px' }}>
-                        <button className="btn btn-primary" style={{ margin: '5px' }}>Editar</button>
+                        <button className="btn btn-primary" style={{ margin: '5px' }} onClick={() => selecionarAlunoCallback(aluno, "editar")}>Editar</button>
                         <button className="btn btn-danger">Excluir</button>
                     </td>
                 </tr>
@@ -57,17 +62,16 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
         })
     }
 
-
-
     return (
         <div style={{ backgroundColor: cor.white, borderRadius: '10px 10px' }}>
             <h3>Cadastro Aluno</h3>
             <header>
-                <button className="btn btn-success" onClick={abrirFecharModalIncluir}><FaUserPlus /> Incluir novo aluno </button>
+                <button className="btn btn-success" onClick={() =>abrirFecharModalIncluir(true)}><FaUserPlus /> Incluir novo aluno </button>
                 <ModalAlunos
                     modalIncluir={modalIncluir}
-                    abrirFecharModalIncluir={() => abrirFecharModalIncluir()}                   
+                    abrirFecharModalIncluir={() => abrirFecharModalIncluir()}
                     adicionarNovoAluno={adicionarNovoAluno}
+                    alunoSelecionado={alunoSelecionado}
                 />
             </header>
             <table className="table table-bordered">
