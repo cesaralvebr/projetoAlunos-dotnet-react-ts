@@ -10,7 +10,6 @@ interface TabelaProps {
     adicionarAluno: (Aluno: Aluno) => void;
 }
 
-
 export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, adicionarAluno }: TabelaProps) {
     const cor = { "white": "#fff" };
 
@@ -28,10 +27,10 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
     }, [alunoSelecionado]);
 
 
-    const abrirFecharModalIncluir = (podeLimpar?:boolean) => {
+    const abrirFecharModalIncluir = (podeLimpar?: boolean) => {
         setModalIncluir(!modalIncluir)
 
-        if(podeLimpar) setAlunoSelecionado(Aluno.vazio());
+        if (podeLimpar) setAlunoSelecionado(Aluno.vazio());
     }
 
     function renderizarCabecalho() {
@@ -66,7 +65,7 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
         <div style={{ backgroundColor: cor.white, borderRadius: '10px 10px' }}>
             <h3>Cadastro Aluno</h3>
             <header>
-                <button className="btn btn-success" onClick={() =>abrirFecharModalIncluir(true)}><FaUserPlus /> Incluir novo aluno </button>
+                <button className="btn btn-success" onClick={() => abrirFecharModalIncluir(true)}><FaUserPlus /> Incluir novo aluno </button>
                 <ModalAlunos
                     modalIncluir={modalIncluir}
                     abrirFecharModalIncluir={() => abrirFecharModalIncluir()}
@@ -82,7 +81,6 @@ export default function Tabela({ alunos, setAlunoSelecionado, alunoSelecionado, 
                     {renderizarCorpo()}
                 </tbody>
             </table>
-
         </div>
     )
 }
