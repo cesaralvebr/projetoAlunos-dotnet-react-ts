@@ -67,7 +67,7 @@ export function useConsumerApi<T = unknown>(url: string) {
                 'content-Type': 'application/json'
             }
         }).then(response => {
-            console.log({ "edição/sucesso": JSON.stringify(response.data) });
+            console.log({ "exclusão/sucesso": JSON.stringify(response.data) });
 
         })
             .catch(error => {

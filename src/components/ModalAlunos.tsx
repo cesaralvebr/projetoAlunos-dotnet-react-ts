@@ -1,24 +1,29 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Aluno from "../models/Aluno";
+import { TipoModal } from "../models/enums/tipos";
 import Entrada from "./Entrada";
 
 interface ModalAlunos {
     modalIncluir: boolean
-    abrirFecharModalIncluir: () => void
+    tipoModal:TipoModal | undefined
+    abrirFecharModal: () => void
     alunoSelecionado: Aluno
     adicionarNovoAluno: (aluno: Aluno) => void
     editarAlunoSelecionado: (aluno: Aluno) => void
+    excluirAlunoSelecionado: (id: number) => void
 }
 
 export default function ModalAlunos(
     {
         modalIncluir,
-        abrirFecharModalIncluir,
+        tipoModal,
+        abrirFecharModal,
         adicionarNovoAluno,
         alunoSelecionado,
-        editarAlunoSelecionado
-    } : ModalAlunos) {
+        editarAlunoSelecionado,
+        excluirAlunoSelecionado
+    }: ModalAlunos) {
 
     const id = alunoSelecionado.id;
     useEffect(() => {
@@ -32,27 +37,41 @@ export default function ModalAlunos(
     const [email, setEmail] = useState<string>("");
 
     return (
-        
-        <Modal isOpen={modalIncluir} >
-            <ModalHeader>
-                Incluir Alunos
-            </ModalHeader>
+        <>
+            {tipoModal === TipoModal.Excluir ?
+                <Modal isOpen={modalIncluir}>
+                    <ModalHeader>
+                        Confirmar a exclusão deste(a) aluno(a) selecionado(a):
+                        <strong> {alunoSelecionado.nome}</strong>
+                    </ModalHeader>
+                    <ModalFooter>                       
+                        <button className="btn btn-success" onClick={() => excluirAlunoSelecionado(alunoSelecionado.id)}>Sim</button> {" "}
+                        <button className="btn btn-danger" onClick={abrirFecharModal}>Não</button>
+                    </ModalFooter>
+                </Modal>
+                :
+                <Modal isOpen={modalIncluir} >
+                    <ModalHeader>
+                        Incluir Alunos
+                    </ModalHeader>
 
-            <ModalBody>
-                {id ?
-                    <Entrada texto="Id" tipo="text" valor={id} somenteLeitura={true} /> : false
-                }
-                <Entrada texto="Nome" tipo="text" valor={nome} setValor={setNome} />
-                <Entrada texto="Idade" tipo="text" valor={idade} setValor={setIdade} />
-                <Entrada texto="E-mail" tipo="text" valor={email} setValor={setEmail} />
-            </ModalBody>
+                    <ModalBody>
+                        {id ?
+                            <Entrada texto="Id" tipo="text" valor={id} somenteLeitura={true} /> : false
+                        }
+                        <Entrada texto="Nome" tipo="text" valor={nome} setValor={setNome} />
+                        <Entrada texto="Idade" tipo="text" valor={idade} setValor={setIdade} />
+                        <Entrada texto="E-mail" tipo="text" valor={email} setValor={setEmail} />
+                    </ModalBody>
 
-            <ModalFooter>
-                {alunoSelecionado.id ?
-                    <button className="btn btn-primary" onClick={() => editarAlunoSelecionado(new Aluno(nome, email, idade, id))}> Editar</button> :
-                    <button className="btn btn-primary" onClick={() => adicionarNovoAluno(new Aluno(nome, email, idade))}> Incluir</button>} {" "}
-                <button className="btn btn-danger" onClick={abrirFecharModalIncluir}>Cancelar</button>
-            </ModalFooter>
-        </Modal>
+                    <ModalFooter>
+                        {alunoSelecionado.id ?
+                            <button className="btn btn-primary" onClick={() => editarAlunoSelecionado(new Aluno(nome, email, idade, id))}> Editar</button> :
+                            <button className="btn btn-primary" onClick={() => adicionarNovoAluno(new Aluno(nome, email, idade))}> Incluir</button>} {" "}
+                        <button className="btn btn-danger" onClick={abrirFecharModal}>Cancelar</button>
+                    </ModalFooter>
+                </Modal>
+            }
+        </>
     )
 }
