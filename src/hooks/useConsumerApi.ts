@@ -4,6 +4,7 @@ import Aluno from "../models/Aluno";
 
 export function useConsumerApi<T = unknown>(url: string) {
     const [data, setData] = useState<T | null>(null);
+    const [updateData, setUpdateData] = useState<boolean>(true);
     const [isFetching, setIsFetching] = useState<boolean>(true);
 
     const api = axios.create({
@@ -33,7 +34,7 @@ export function useConsumerApi<T = unknown>(url: string) {
             }
         }).then(response => {
             console.log({ "adição/sucesso": JSON.stringify(response.data) });
-
+            setUpdateData(true)
         })
             .catch(error => {
                 console.log(error)
@@ -43,7 +44,7 @@ export function useConsumerApi<T = unknown>(url: string) {
     const editarAluno = async (aluno: Aluno) => {
         await api({
             method: 'put',
-            url: url+"/"+aluno.id,
+            url: url + "/" + aluno.id,
             withCredentials: false,
             data: aluno,
             headers: {
@@ -51,29 +52,36 @@ export function useConsumerApi<T = unknown>(url: string) {
             }
         }).then(response => {
             console.log({ "edição/sucesso": JSON.stringify(response.data) });
-
+            setUpdateData(true)
         })
             .catch(error => {
                 console.log(error)
             })
     }
 
-    const excluirAluno = async (id:number) => {
+    const excluirAluno = async (id: number) => {
         await api({
             method: 'delete',
-            url: url+"/"+id,
+            url: url + "/" + id,
             withCredentials: false,
             headers: {
                 'content-Type': 'application/json'
             }
         }).then(response => {
             console.log({ "exclusão/sucesso": JSON.stringify(response.data) });
-
+            setUpdateData(true)
         })
             .catch(error => {
                 console.log(error)
             })
     }
 
-    return { data, isFetching, adicionarAluno, editarAluno,excluirAluno, obterAlunos }
+    useEffect(() => {
+        if (updateData) {
+            obterAlunos();
+            setUpdateData(false)
+        }
+    }, [updateData])
+
+    return { data, isFetching, adicionarAluno, editarAluno, excluirAluno, obterAlunos }
 }

@@ -8,11 +8,7 @@ export default function PainelAlunos() {
 
     const [alunoSelecionado, setAlunoSelecionado] = useState<Aluno>(Aluno.vazio())
     const { data: todosAlunos, isFetching, adicionarAluno, editarAluno, excluirAluno, obterAlunos } = useConsumerApi<Aluno[]>("api/Alunos")
-
-    useEffect(() => {
-        obterAlunos();
-    }, [alunoSelecionado])
-
+   
     return (
         <div>
             {isFetching ?? <p>Carregando...</p>}
