@@ -27,7 +27,7 @@ export default function Tabela(
 
     const cor = { "white": "#fff" };
 
-    const [modalIncluir, setModalIncluir] = useState<boolean>(false);
+    const [statusModal, setStatusModal] = useState<boolean>(false);
     const [tipoModal, setTipoModal] = useState<TipoModal|undefined>();
 
   
@@ -65,7 +65,7 @@ export default function Tabela(
     }
     
     const abrirFecharModal = (tipoModal?:TipoModal, podeLimpar?: boolean) => {
-        setModalIncluir(!modalIncluir)
+        setStatusModal(!statusModal)
         setTipoModal(tipoModal)
         if (podeLimpar) setAlunoSelecionado(Aluno.vazio());
     }
@@ -104,7 +104,7 @@ export default function Tabela(
             <header>
                 <button className="btn btn-success" onClick={() => abrirFecharModal(TipoModal.Adicionar,true)}><FaUserPlus /> Incluir novo aluno </button>
                 <ModalAlunos
-                    modalIncluir={modalIncluir}
+                    statusModal={statusModal}
                     tipoModal={tipoModal}
                     abrirFecharModal={() => abrirFecharModal()}
                     adicionarNovoAluno={adicionarNovoAluno}

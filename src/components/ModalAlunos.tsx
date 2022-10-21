@@ -1,11 +1,11 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Aluno from "../models/Aluno";
 import { TipoModal } from "../models/enums/tipos";
 import Entrada from "./Entrada";
 
 interface ModalAlunos {
-    modalIncluir: boolean
+    statusModal: boolean
     tipoModal:TipoModal | undefined
     abrirFecharModal: () => void
     alunoSelecionado: Aluno
@@ -16,7 +16,7 @@ interface ModalAlunos {
 
 export default function ModalAlunos(
     {
-        modalIncluir,
+        statusModal,
         tipoModal,
         abrirFecharModal,
         adicionarNovoAluno,
@@ -39,7 +39,7 @@ export default function ModalAlunos(
     return (
         <>
             {tipoModal === TipoModal.Excluir ?
-                <Modal isOpen={modalIncluir}>
+                <Modal isOpen={statusModal}>
                     <ModalHeader>
                         Confirmar a exclusão deste(a) aluno(a) selecionado(a):
                         <strong> {alunoSelecionado.nome}</strong>
@@ -50,7 +50,7 @@ export default function ModalAlunos(
                     </ModalFooter>
                 </Modal>
                 :
-                <Modal isOpen={modalIncluir} >
+                <Modal isOpen={statusModal} >
                     <ModalHeader>
                         Incluir Alunos
                     </ModalHeader>
